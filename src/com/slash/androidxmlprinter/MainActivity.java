@@ -3,6 +3,7 @@ package com.slash.androidxmlprinter;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -18,7 +19,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        syncGetPermissions(new IOnPermissionsDone() {
+        syncGetPermissions(this,new IOnPermissionsDone() {
 			
 			@Override
 			public void onPermissionsDone(List<String> permissions) {
@@ -34,12 +35,12 @@ public class MainActivity extends Activity {
 		});
     }
 
-	private void syncGetPermissions(final IOnPermissionsDone callback) {
+	private void syncGetPermissions(final Context context,final IOnPermissionsDone callback) {
 		new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
-				List<String> permissions = AXMLDecoder.getPermissions(apkPath);
+				List<String> permissions = AXMLDecoder.getPermissions(context,apkPath);
 				
 				if(callback!=null){
 					callback.onPermissionsDone(permissions);

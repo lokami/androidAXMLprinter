@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AndroidXmlDecoder</string>
+    <string name="hello_world">Hello world!</string>
+	<string name="LOCATION">获取用户的经纬度信息</string>
+	<string name="NETWORK">获取用户的网络信息状态</string>
+	<string name="ACCOUNT">获取账户验证信息</string>
+	<string name="BLUETOOTH">允许程序发现和配对蓝牙设备或通过蓝牙分享</string>
+	<string name="CAMERA">请求访问使用照相设备</string>
+	<string name="INTERNET">访问网络连接，可能产生GPRS流量</string>
+	<string name="VIBRATE">允许震动</string>
+	<string name="WRITE_SETTINGS">允许程序读取或写入系统设置</string>
+	<string name="SYSTEM_ALERT_WINDOW">允许显示系统窗口</string>
+	<string name="WAKE_LOCK">允许后台进程运行</string>
+	<string name="READ_PHONE_STATE">允许访问电话状态</string>
+	<string name="WRITE_EXTERNAL_STORAGE">允许程序写入外部存储</string>
+	<string name="AUDIO">修改声音设置,允许录音</string>
+	<string name="FILE_SYSTEMS">挂载、反挂载外部文件系统</string>
+	<string name="READ_CONTACTS">访问联系人通讯录信息</string>
+	<string name="OTHER">其他权限</string>
+</resources>

@@ -11,6 +11,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import com.slash.androidxmlprinter.android.AttrValueConverter;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Xml;
@@ -20,7 +21,7 @@ public class XMLparser {
 	static String PERMISSION_TAG = "uses-permission";
 	static String ATTR_NAME = "android:name";
 	
-	public static List<String> parseXMLForPermissions(String xmlPath){
+	public static List<String> parseXMLForPermissions(Context context,String xmlPath){
 		FileInputStream xmlReader = null;
 		List<String> permissions = new ArrayList<String>();
 		
@@ -36,7 +37,7 @@ public class XMLparser {
 				case XmlPullParser.START_TAG:
 					if(TextUtils.equals(parser.getName(), PERMISSION_TAG)){
 						String attrValue = parser.getAttributeValue(0);
-						String p = AttrValueConverter.convert(attrValue);
+						String p = AttrValueConverter.convert(context,attrValue);
 						if(!permissions.contains(p)){
 							permissions.add(p);
 						}
