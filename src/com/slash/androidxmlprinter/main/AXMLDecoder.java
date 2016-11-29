@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -18,6 +19,9 @@ import com.slash.androidxmlprinter.axml.AXmlResourceParser;
 import com.slash.androidxmlprinter.zip.Apk2Zip;
 
 public class AXMLDecoder {
+		
+		public static final String TAG = "AXMLDecoder";
+	
 	    private static final float[] RADIX_MULTS = new float[]{0.00390625F, 3.051758E-5F, 1.192093E-7F, 4.656613E-10F};
 	    private static final String[] DIMENSION_UNITS = new String[]{"px", "dip", "sp", "pt", "in", "mm", "", ""};
 	    private static final String[] FRACTION_UNITS = new String[]{"%", "%p", "", "", "", "", "", ""};
@@ -27,28 +31,37 @@ public class AXMLDecoder {
 	    public AXMLDecoder() {
 	    }
 
-	    public static List<String> getPermissions(String apkPath){
+	    public static List<String> getPermissions(Context context,String apkPath){
 	    	String outZipPath = apkPath.substring(0,apkPath.lastIndexOf("."))+".zip";
 	    	
 	    	boolean renamed = Apk2Zip.renameFile(apkPath,outZipPath);
-			if(!renamed){
+	    	boolean copyed = Apk2Zip.copyAPK2ZIP(apkPath, outZipPath);
+			if(!copyed){
+				Log.d(TAG, "failed to copy file");
 				return null;
 			}
-			List<String> permissions = readManifestFromZip(outZipPath);
+			List<String> permissions = readManifestFromZip(context,outZipPath);
 			if(permissions == null){
+				Log.d(TAG, "read manifest failed");
 				return null;
 			} 
 			
-			Apk2Zip.renameFile(outZipPath, apkPath);
+//			Apk2Zip.renameFile(outZipPath, apkPath);
+			File outZipFile = new File(outZipPath);
+			
+			if(outZipFile.exists()){
+				boolean delete = outZipFile.delete();
+				Log.d(TAG, "删除zip文件?"+delete);
+			}
 			
 			return permissions;
 	    }
 	    
-	    private static List<String> readManifestFromZip(String zipPath){
+	    private static List<String> readManifestFromZip(Context context,String zipPath){
 			
 			List<String> permissions = new ArrayList<>();
-			
 			if(TextUtils.isEmpty(zipPath)||!new File(zipPath).exists()){
+				Log.d(TAG, "file path is invalid");
 				return null;
 			}
 			ZipInputStream zipReader = null;
@@ -58,7 +71,7 @@ public class AXMLDecoder {
 				while((zipEntry = zipReader.getNextEntry())!=null){
 					String name = zipEntry.getName();
 					if(name.equals(MANIFEST_NAME)){
-						decodeManifest(permissions, zipReader);
+						decodeManifest(context,permissions, zipReader);
 						break;
 					} 
 				}
@@ -80,8 +93,8 @@ public class AXMLDecoder {
 			return permissions;
 		}
 	    
-	    private static void decodeManifest(List<String> permissions ,InputStream xmlStream){
-	            try {
+	    private static void decodeManifest(Context context,List<String> permissions ,InputStream xmlStream){
+	        try {
 	                AXmlResourceParser e = new AXmlResourceParser();
 	                e.open(xmlStream);
 
@@ -94,9 +107,10 @@ public class AXMLDecoder {
 	                        if(type == 2){
 	                        	String name = e.getName();
 	                        	if(name.equals(PERMISSION)){
+	                        		Log.d(TAG, "find permission");
 	                        		for(int i=0 ;i != e.getAttributeCount(); ++i){
 	                        			String attrValue = getAttributeValue(e,i);
-	                        			String permission = AttrValueConverter.convert(attrValue);
+	                        			String permission = AttrValueConverter.convert(context,attrValue);
 	                        			if(!permissions.contains(permission)){
 	                        				permissions.add(permission);
 	                        			}

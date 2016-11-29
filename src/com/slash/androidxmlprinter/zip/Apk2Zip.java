@@ -58,8 +58,7 @@ public class Apk2Zip {
 	public static boolean renameFile(String srcPath,String dstPath){
 		File srcFile = new File(srcPath);
 		if(srcFile.exists()){
-			srcFile.renameTo(new File(dstPath));
-			return true;
+			return srcFile.renameTo(new File(dstPath));
 		}
 		return false;
 	}
