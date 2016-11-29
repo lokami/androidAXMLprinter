@@ -4,9 +4,7 @@ import java.lang.ref.WeakReference;
 
 import com.slash.androidxmlprinter.R;
 
-import android.Manifest.permission;
 import android.content.Context;
-import android.content.pm.PermissionInfo;
 import android.util.Log;
 
 /**
@@ -22,7 +20,7 @@ public class AttrValueConverter {
 	private static Context getWeakContext(Context ctx){
 		if(null==mCtx){
 			mCtx = new WeakReference<>(ctx).get();
-			Log.d("AttrValueConverter", "context weakReference is initialized");
+			Log.d("AttrValueConverter", "context weakReference is initialized ");
 		}
 		return mCtx;
 	}

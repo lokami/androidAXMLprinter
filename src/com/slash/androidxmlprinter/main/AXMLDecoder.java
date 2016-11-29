@@ -34,7 +34,7 @@ public class AXMLDecoder {
 	    public static List<String> getPermissions(Context context,String apkPath){
 	    	String outZipPath = apkPath.substring(0,apkPath.lastIndexOf("."))+".zip";
 	    	
-	    	boolean renamed = Apk2Zip.renameFile(apkPath,outZipPath);
+//	    	boolean renamed = Apk2Zip.renameFile(apkPath,outZipPath);
 	    	boolean copyed = Apk2Zip.copyAPK2ZIP(apkPath, outZipPath);
 			if(!copyed){
 				Log.d(TAG, "failed to copy file");
@@ -94,7 +94,7 @@ public class AXMLDecoder {
 		}
 	    
 	    private static void decodeManifest(Context context,List<String> permissions ,InputStream xmlStream){
-	        try {
+	            try {
 	                AXmlResourceParser e = new AXmlResourceParser();
 	                e.open(xmlStream);
 
